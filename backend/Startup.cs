@@ -38,6 +38,9 @@ namespace backend
             services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlite(Configuration.GetConnectionString("SqliteConnection")));
             services.AddScoped<UsersServices>();
+            services.AddScoped<CategoryServices>();
+            services.AddScoped<SupliersServices>();
+            services.AddScoped<ProductsServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -25,9 +25,13 @@ namespace backend.Models
         public string SexType { get; set; }
 
         [Required]
+        [MinLength(10)]
+        [MaxLength(10)]
         public string PhoneNumber { get; set; }
 
         [Required]
+        [MinLength(10)]
+        [MaxLength(10)]
         public string CellPhoneNumber { get; set; }
 
         [Required]
@@ -49,13 +53,14 @@ namespace backend.Models
         [Required]
         public string password { get; set; }
 
+        public ICollection<Categories> Categories { get; set; }
+        public ICollection<Products> Products { get; set; }
+        public ICollection<Suppliers> Supliers { get; set; }
+
         //public ICollection<Clientes> Clientes { get; set; }
-        //public ICollection<Productos> Productos { get; set; }
         //public ICollection<Ventas> Ventas { get; set; }
         //public ICollection<Compras> Compras { get; set; }
-        //public ICollection<Categorias> Categorias { get; set; }
         //public ICollection<Empleados> Empleados { get; set; }
-        //public ICollection<Suplidores> Suplidores { get; set; }
 
         public Users()
         {

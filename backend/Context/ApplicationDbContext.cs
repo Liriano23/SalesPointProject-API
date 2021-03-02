@@ -9,6 +9,9 @@ namespace backend.Context
 {
     public class ApplicationDbContext : DbContext
     {
+        public DbSet<Categories> Categories { get; set; }
+        public DbSet<Products> Products { get; set; }
+        public DbSet<Suppliers> Suppliers { get; set; }
         public DbSet<Users> Users { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
