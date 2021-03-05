@@ -54,13 +54,11 @@ namespace backend.Models
         public string password { get; set; }
 
         public ICollection<Categories> Categories { get; set; }
+        public ICollection<Employers> Employers { get; set; }
         public ICollection<Products> Products { get; set; }
         public ICollection<Suppliers> Supliers { get; set; }
-
-        //public ICollection<Clientes> Clientes { get; set; }
-        //public ICollection<Ventas> Ventas { get; set; }
-        //public ICollection<Compras> Compras { get; set; }
-        //public ICollection<Empleados> Empleados { get; set; }
+        public ICollection<Sales> Sales { get; set; }
+        public ICollection<Shops> Shops { get; set; }
 
         public Users()
         {
