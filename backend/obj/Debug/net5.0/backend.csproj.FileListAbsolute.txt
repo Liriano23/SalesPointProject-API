@@ -56,3 +56,15 @@ C:\Users\Liria\OneDrive\Escritorio\SalesPoint\sale-point\backend\obj\Debug\net5.
 C:\Users\Liria\OneDrive\Escritorio\SalesPoint\sale-point\backend\obj\Debug\net5.0\backend.pdb
 C:\Users\Liria\OneDrive\Escritorio\SalesPoint\sale-point\backend\obj\Debug\net5.0\backend.genruntimeconfig.cache
 C:\Users\Liria\OneDrive\Escritorio\SalesPoint\sale-point\backend\bin\Debug\net5.0\DATA\SalesPointDb.db
+C:\Users\Liria\OneDrive\Escritorio\SalesPoint\sale-point\backend\bin\Debug\net5.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+C:\Users\Liria\OneDrive\Escritorio\SalesPoint\sale-point\backend\bin\Debug\net5.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+C:\Users\Liria\OneDrive\Escritorio\SalesPoint\sale-point\backend\bin\Debug\net5.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Users\Liria\OneDrive\Escritorio\SalesPoint\sale-point\backend\bin\Debug\net5.0\Microsoft.Extensions.Identity.Core.dll
+C:\Users\Liria\OneDrive\Escritorio\SalesPoint\sale-point\backend\bin\Debug\net5.0\Microsoft.Extensions.Identity.Stores.dll
+C:\Users\Liria\OneDrive\Escritorio\SalesPoint\sale-point\backend\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Liria\OneDrive\Escritorio\SalesPoint\sale-point\backend\bin\Debug\net5.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\Liria\OneDrive\Escritorio\SalesPoint\sale-point\backend\bin\Debug\net5.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\Liria\OneDrive\Escritorio\SalesPoint\sale-point\backend\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\Liria\OneDrive\Escritorio\SalesPoint\sale-point\backend\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\Liria\OneDrive\Escritorio\SalesPoint\sale-point\backend\bin\Debug\net5.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\Liria\OneDrive\Escritorio\SalesPoint\sale-point\backend\bin\Debug\net5.0\System.IdentityModel.Tokens.Jwt.dll

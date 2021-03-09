@@ -5,6 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using backend.Services;
 using backend.Models;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.Extensions.Configuration;
+using System.IdentityModel.Tokens.Jwt;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace backend.Controllers
@@ -13,77 +19,107 @@ namespace backend.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly UsersServices usersServices;
+        private readonly UserManager<IdentityUser> userManager;
+        private readonly IConfiguration configuration;
+        private readonly SignInManager<IdentityUser> signInManager;
 
-        public UsersController(UsersServices usersServices)
+        public UsersController(UserManager<IdentityUser> userManager, 
+            IConfiguration configuration, SignInManager<IdentityUser> signInManager)
         {
-            this.usersServices = usersServices;
+            this.userManager = userManager;
+            this.configuration = configuration;
+            this.signInManager = signInManager;
         }
 
-        // GET: api/<UsersController>
-        [HttpGet]
-        public async Task<ActionResult> Get()
+        [HttpPost("create")]
+        public async Task<ActionResult<AuthResponse>> Create([FromBody] Users user)
         {
-            var objList = await usersServices.GetList();
-            return Ok(objList);
-        }
+            var usuario = new IdentityUser { UserName = user.Email, Email = user.Email };
+            var result = await userManager.CreateAsync(usuario, user.Password);
 
-        // GET api/<UsersController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<UsersController>
-        [HttpPost]
-        public async Task<ActionResult> Post(Users users)
-        {
-            if (!ModelState.IsValid)
+            if (result.Succeeded)
             {
-                return BadRequest();
-            }
-
-            var objUser = await usersServices.Insert(users);
-
-            if (!objUser)
-            {
-                ModelState.AddModelError("", $"An error occurs saving the user {users.Name}");
-                return StatusCode(500, ModelState);
-            }
-
-            return Ok();
-        }
-
-        // PUT api/<UsersController>/5
-        [HttpPut("{id:int}")]
-        public async Task<ActionResult> Put(int id, Users users)
-        {
-            if (await usersServices.Update(users) )
-            {
-                return Ok();
+                return await BuildToken(user);
             }
             else
             {
-                return NotFound();
+                return BadRequest(result.Errors);
             }
         }
-
-        // DELETE api/<UsersController>/5
-        [HttpDelete("{id:int}")]
-        public async Task<ActionResult> Delete(int id)
+        
+        private async Task<AuthResponse> BuildToken(Users user)
         {
-            var isDeleted = await usersServices.Delete(id);
-
-            if (isDeleted) 
+            var claims = new List<Claim>()
             {
-                return Ok();
+                new Claim("email",user.Email)
+            };
+
+            var usuario = await userManager.FindByEmailAsync(user.Email);
+            var claimsDb = await userManager.GetClaimsAsync(usuario);
+
+            claims.AddRange(claimsDb);
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["llavejwt"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var expiration = DateTime.UtcNow.AddYears(1);
+
+            var token = new JwtSecurityToken(issuer: null, audience: null, claims: claims,
+                expires: expiration, signingCredentials: creds);
+
+            return new AuthResponse()
+            {
+                Token = new JwtSecurityTokenHandler().WriteToken(token),
+                Expiration = expiration
+            };
+        }
+
+        [HttpPost("login")]
+        public async Task<ActionResult<AuthResponse>> Login([FromBody] Users user)
+        {
+            var result = await signInManager.PasswordSignInAsync(user.Email, user.Password,
+                isPersistent: false, lockoutOnFailure: false);
+
+            if (result.Succeeded)
+            {
+                return await BuildToken(user);
             }
             else
             {
-                ModelState.AddModelError("", $"A Error occur Deleting de user with Id =  {id}");
-                return StatusCode(404, ModelState);
+                return BadRequest("Login incorrecto");
             }
         }
+
+
+        [HttpPost("makeAdmin")]
+        public async Task<ActionResult> MakeAdmin([FromBody] string userId)
+        {
+            var usuario = await userManager.FindByIdAsync(userId);
+            await userManager.AddClaimAsync(usuario, new Claim("role","admin"));
+            return NoContent();
+        }
+
+        [HttpPost("removeAdmin")]
+        public async Task<ActionResult> RemoveAdmin([FromBody] string userId)
+        {
+            var usuario = await userManager.FindByIdAsync(userId);
+            await userManager.RemoveClaimAsync(usuario, new Claim("role", "admin"));
+            return NoContent();
+        }
+
+        
+        //[HttpPost("logout")]
+        //public async Task<IActionResult> Logout(string returnUrl = null)
+        //{
+        //    await signInManager.SignOutAsync();
+        //    if (returnUrl != null)
+        //    {
+        //        return LocalRedirect(returnUrl);
+        //    }
+        //    else
+        //    {
+        //        return LocalRedirect(returnUrl);
+        //    }
+        //}
+
     }
 }
