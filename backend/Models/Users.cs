@@ -20,6 +20,7 @@ namespace backend.Models
         
         [Required]
         public string Password { get; set; }
+       
         //[Key]
         //[Required]
         //public int UserId { get; set; }
